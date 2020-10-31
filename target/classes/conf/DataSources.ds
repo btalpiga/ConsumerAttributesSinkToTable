@@ -1,0 +1,11 @@
+<data_sources>
+    <data_source IP = "10.100.1.17"
+                 DATABASE = "datawarehouse"
+                 USERNAME = "postgres"
+                 PASSWORD = "postgres10@"
+                 JDBC_URL = "jdbc:postgresql://10.100.1.17/datawarehouse"
+                 DS_NAME = "datawarehouse"
+                 MAX_POOL_SIZE = "4"
+                 INITIAL_POOL_SIZE = "1"
+                 ACQUIRE_INCREMENT = "1" />
+</data_sources>
