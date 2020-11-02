@@ -78,6 +78,13 @@
             <version>1.2.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.nyble</groupId>
+            <artifactId>NybleEmbededWebServer</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -102,32 +109,19 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
-
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <finalName>ConsumerAttributesSinkToTable</finalName>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.nyble.main.App</mainClass>
-                        </manifest>
-                    </archive>
+                    <fork>true</fork>
+                    <mainClass>com.nyble.main.App</mainClass>
                 </configuration>
-
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
         </plugins>
     </build>
