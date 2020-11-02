@@ -22,11 +22,14 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
+@SpringBootApplication(scanBasePackages = {"com.nyble.rest"})
 public class App {
 
     final static String KAFKA_CLUSTER_BOOTSTRAP_SERVERS = "10.100.1.17:9093";
@@ -69,6 +72,7 @@ public class App {
 
     public static void main(String[] args){
 
+        SpringApplication.run(App.class, args);
         logger.debug("Start new consumer for group {}", groupId);
         final int noOfConsumers = 4;
         final String queryStr = "SELECT payload from consumers where system_id = ? and consumer_id = ?";
