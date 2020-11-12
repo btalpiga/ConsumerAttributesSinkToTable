@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3218b098-43ce-4a44-a61c-edfd69c643e3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nyble/rest/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nyble/rest/resources/LogLevelRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nyble/rest/resources/Response.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/nyble/main/RecordProcessorImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyble/main/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyble/main/App.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,17 +126,38 @@
       <option name="presentableId" value="Default" />
       <updated>1597584355315</updated>
     </task>
+    <task id="LOCAL-00001" summary="Adaugare server web port 7002">
+      <created>1604320845097</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1604320845097</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Start server web in functia main">
+      <created>1604321146205</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1604321146205</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adaugare server web port 7002" />
+    <MESSAGE value="Start server web in functia main" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start server web in functia main" />
   </component>
   <component name="WindowStateProjectService">
     <state x="350" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598447376381">
       <screen x="0" y="30" width="1680" height="1050" />
     </state>
     <state x="350" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/1680.0.1920.1080/0.30.1680.1050@0.30.1680.1050" timestamp="1598447376380" />
-    <state x="2481" y="239" width="374" height="626" key="#com.intellij.ide.util.MemberChooser" timestamp="1597843939597">
-      <screen x="1680" y="0" width="1920" height="1080" />
+    <state x="1641" y="260" width="374" height="626" key="#com.intellij.ide.util.MemberChooser" timestamp="1605172741134">
+      <screen x="67" y="27" width="3773" height="1053" />
     </state>
     <state x="2481" y="239" width="374" height="626" key="#com.intellij.ide.util.MemberChooser/1680.0.1920.1080/0.30.1680.1050@1680.0.1920.1080" timestamp="1597843939597" />
+    <state x="1641" y="260" key="#com.intellij.ide.util.MemberChooser/67.27.3773.1053@67.27.3773.1053" timestamp="1605172741134" />
     <state x="837" y="495" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1604320781991">
       <screen x="67" y="27" width="3773" height="1053" />
     </state>
@@ -163,6 +181,10 @@
     <state x="967" y="441" width="563" height="582" key="#xdebugger.evaluate/1680.0.1920.1080/0.30.1680.1050@0.30.1680.1050" timestamp="1598258580893" />
     <state x="2597" y="280" width="549" height="582" key="#xdebugger.evaluate/1680.0.1920.1080/0.30.1680.1050@1680.0.1920.1080" timestamp="1597923987932" />
     <state x="1912" y="291" key="#xdebugger.evaluate/67.27.3773.1053@67.27.3773.1053" timestamp="1601635895010" />
+    <state x="2148" y="147" width="1235" height="807" key="CommitChangelistDialog2" timestamp="1604321146113">
+      <screen x="67" y="27" width="3773" height="1053" />
+    </state>
+    <state x="2148" y="147" width="1235" height="807" key="CommitChangelistDialog2/67.27.3773.1053@67.27.3773.1053" timestamp="1604321146113" />
     <state width="1148" height="456" key="DebuggerActiveHint" timestamp="1601741468617">
       <screen x="67" y="27" width="3773" height="1053" />
     </state>
@@ -221,6 +243,10 @@
     <state width="1259" height="266" key="GridCell.Tab.1.right/1680.0.1920.1080/0.30.1680.1050@0.30.1680.1050" timestamp="1598597111939" />
     <state width="1396" height="266" key="GridCell.Tab.1.right/1680.0.1920.1080/0.30.1680.1050@1680.0.1920.1080" timestamp="1597940454913" />
     <state width="1406" height="266" key="GridCell.Tab.1.right/67.27.3773.1053@67.27.3773.1053" timestamp="1601798432842" />
+    <state x="2365" y="286" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1604321157847">
+      <screen x="67" y="27" width="3773" height="1053" />
+    </state>
+    <state x="2365" y="286" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.3773.1053@67.27.3773.1053" timestamp="1604321157847" />
     <state x="2032" y="292" key="com.intellij.ide.util.TipDialog" timestamp="1602702013681">
       <screen x="1680" y="0" width="1920" height="1080" />
     </state>
@@ -231,6 +257,10 @@
     </state>
     <state x="537" y="200" width="710" height="538" key="find.popup/1680.0.1920.1080/0.30.1680.1050@0.30.1680.1050" timestamp="1598453763661" />
     <state x="1273" y="197" width="1595" height="540" key="find.popup/67.27.3773.1053@67.27.3773.1053" timestamp="1604051828223" />
+    <state x="2314" y="344" width="903" height="413" key="git4idea.merge.GitPullDialog" timestamp="1604320867185">
+      <screen x="67" y="27" width="3773" height="1053" />
+    </state>
+    <state x="2314" y="344" width="903" height="413" key="git4idea.merge.GitPullDialog/67.27.3773.1053@67.27.3773.1053" timestamp="1604320867185" />
     <state x="1061" y="290" width="1912" height="588" key="new project wizard" timestamp="1604052001157">
       <screen x="67" y="27" width="3773" height="1053" />
     </state>
