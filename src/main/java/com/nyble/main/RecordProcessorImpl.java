@@ -110,7 +110,7 @@ public class RecordProcessorImpl implements RecordProcessor<String, String> {
                     final String updateUniqueCriteria = String.format("INSERT INTO %s (system_id, consumer_id, %s) \n" +
                             "values (%d,%d,"+(val!=null ? "'"+val+"'" : "NULL")+") \n" +
                             "ON CONFLICT ON CONSTRAINT consumers_unique_entity_criterias_pkey DO \n" +
-                            "UPDATE set %s= excluded.s",
+                            "UPDATE set %s= excluded.%s",
                             tableUniqueEntityCriteria, tableColumnName, systemId, consumerId, tableColumnName, tableColumnName);
                     final Statement st = update.getConnection().createStatement();
                     st.executeUpdate(updateUniqueCriteria);
