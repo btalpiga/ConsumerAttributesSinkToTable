@@ -5,7 +5,6 @@ import com.nyble.facades.kafkaConsumer.RecordProcessor;
 import com.nyble.models.consumer.CAttribute;
 import com.nyble.models.consumer.Consumer;
 import com.nyble.topics.TopicObjectsFactory;
-import com.nyble.topics.consumerActions.ConsumerActionsValue;
 import com.nyble.topics.consumerAttributes.ConsumerAttributesKey;
 import com.nyble.topics.consumerAttributes.ConsumerAttributesValue;
 import com.nyble.util.DBUtil;
@@ -16,8 +15,12 @@ import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
-import java.time.Duration;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.nyble.main.App.sendToTopic;
@@ -87,6 +90,14 @@ public class RecordProcessorImpl implements RecordProcessor<String, String> {
 
             long previousUpdated = 0;
             String oldValue = null;
+            if(!consumer.hasProperty("systemId")){
+                consumer.setProperty("systemId", new CAttribute(systemId+"", new Date().getTime()+""));
+            }
+            if(!consumer.hasProperty("consumerId")){
+                consumer.setProperty("consumerId", new CAttribute(consumerId+"", new Date().getTime()+""));
+            }
+
+
             if(consumer.hasProperty(propertyName)){
                 previousUpdated = Long.parseLong(consumer.getTimestamp(propertyName));
                 oldValue = consumer.getValue(propertyName);
