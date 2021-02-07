@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.time.Duration;
 import java.util.*;
@@ -33,16 +34,15 @@ public class App {
     static Properties producerProperties = new Properties();
     static ProducerManager producerManager;
     static Map<String, String> uniqueEntityAttributes = new HashMap<>();
-    static {
+
+    public static void initProps(){
         uniqueEntityAttributes.put("fullName", "full_name");
         uniqueEntityAttributes.put("phone", "phone");
         uniqueEntityAttributes.put("email", "email");
         uniqueEntityAttributes.put("location", "location");
         uniqueEntityAttributes.put("birthDate", "birth_date");
         uniqueEntityAttributes.put("entityId", "entity_id");
-    }
 
-    public static void initProps(){
         consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_CLUSTER_BOOTSTRAP_SERVERS);
         consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
@@ -60,24 +60,34 @@ public class App {
     }
 
     public static void main(String[] args){
-        SpringApplication.run(App.class, args);
+        try{
+            ConfigurableApplicationContext ctx = SpringApplication.run(App.class, args);
+            logger.debug("Initiate kafka clients properties");
+            initProps();
+            logger.debug("Initiate producers");
+            producerManager = ProducerManager.getInstance(producerProperties);
 
-        logger.debug("Initiate kafka clients properties");
-        initProps();
+            logger.debug("Start new consumer for group {}", groupId);
+            final int noOfConsumers = 4;
+            KafkaConsumerFacade<String, String> kafkaConsumers = new KafkaConsumerFacade<>(consumerProps,
+                    noOfConsumers, KafkaConsumerFacade.PROCESSING_TYPE_BATCH);
+            kafkaConsumers.subscribe(Collections.singletonList(Names.CONSUMER_ATTRIBUTES_TOPIC));
+            kafkaConsumers.startPolling(Duration.ofSeconds(10), RecordProcessorImpl.class);
 
-        logger.debug("Initiate producers");
-        producerManager = ProducerManager.getInstance(producerProperties);
-        Runtime.getRuntime().addShutdownHook(new Thread(()->{
-            producerManager.getProducer().flush();
-            producerManager.getProducer().close();
-        }));
-
-        logger.debug("Start new consumer for group {}", groupId);
-        final int noOfConsumers = 4;
-        KafkaConsumerFacade<String, String> kafkaConsumers = new KafkaConsumerFacade<>(consumerProps,
-                noOfConsumers, KafkaConsumerFacade.PROCESSING_TYPE_BATCH);
-        kafkaConsumers.subscribe(Collections.singletonList(Names.CONSUMER_ATTRIBUTES_TOPIC));
-        kafkaConsumers.startPolling(Duration.ofSeconds(10), RecordProcessorImpl.class);
+            Runtime.getRuntime().addShutdownHook(new Thread(()->{
+                ctx.stop();
+                producerManager.getProducer().flush();
+                producerManager.getProducer().close();
+                try {
+                    kafkaConsumers.stopPolling();
+                } catch (InterruptedException e) {
+                    logger.error("Error gracefully stopping kafka loops", e);
+                }
+            }));
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            logger.error("Stopping consumer attributes sinker");
+        }
     }
 
 
