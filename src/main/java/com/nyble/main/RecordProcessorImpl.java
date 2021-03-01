@@ -17,6 +17,10 @@ import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -49,7 +53,8 @@ public class RecordProcessorImpl implements RecordProcessor<String, String> {
         logger.info("start batch consumers");
         Map<String, Map<String, CAttribute>> consumers = batchConsumers(consumerRecords);
         long end = System.currentTimeMillis();
-        logger.info("end batch consumers, took {}", (end - start));
+        long totalBatchConsumer = end - start;
+        logger.info("end batch consumers, took {}", totalBatchConsumer);
 
         start = System.currentTimeMillis();
         logger.info("start batch commit");
@@ -76,9 +81,21 @@ public class RecordProcessorImpl implements RecordProcessor<String, String> {
             }
         }
         end = System.currentTimeMillis();
-        logger.info("end batch commit, took {} for {} consumers", (end-start), consumers.size());
+        long totalBatchCommit = end - start;
+        logger.info("end batch commit, took {} for {} consumers", totalBatchCommit, consumers.size());
+
+        if(totalBatchCommit + totalBatchConsumer > 5*60*1000){
+            logger.warn("Processing a batch took more than 5 mins, default of max.poll.interval.ms, \n" +
+                    "{} ms batching consumers + {} ms committing {} consumers", totalBatchConsumer, totalBatchCommit, consumers.size());
+            String fileLoc = saveToFile(consumers);
+            if(fileLoc != null){
+                logger.warn("Problematic consumers stored to: "+fileLoc);
+            }
+        }
         return true;
     }
+
+
 
 
     public Map<String, Map<String, CAttribute>> batchConsumers(ConsumerRecords<String, String> consumerRecords){
@@ -212,6 +229,26 @@ public class RecordProcessorImpl implements RecordProcessor<String, String> {
         }
         long end = System.currentTimeMillis();
         logger.info("Consumer processing took {} millis", (end- start));
+    }
+
+    private String saveToFile(Map<String, Map<String, CAttribute>> consumers) {
+        File  loc = new File("consumerAttributes_problematicConsumers_"+System.currentTimeMillis()+".txt");
+        try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(loc)))){
+            for(Map.Entry<String, Map<String, CAttribute>> consumer : consumers.entrySet()){
+                String consumerIdentification = consumer.getKey();
+                StringBuilder sb = new StringBuilder();
+                sb.append(consumerIdentification).append("\n");
+                for(Map.Entry<String, CAttribute> attribute : consumer.getValue().entrySet()){
+                    sb.append("\t").append(attribute.getKey()).append(":").append(attribute.getValue().getValue())
+                        .append("\n");
+                }
+                bw.write(sb.toString());
+            }
+            return loc.getAbsolutePath();
+        }catch(Exception e){
+            logger.error("Could not save problematic consumers to file", e);
+            return null;
+        }
     }
 
 }
